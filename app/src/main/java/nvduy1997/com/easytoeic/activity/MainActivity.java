@@ -4,7 +4,6 @@ package nvduy1997.com.easytoeic.activity;
 import android.os.Bundle;
 
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,7 +21,6 @@ import nvduy1997.com.easytoeic.fragment.ListTestFragment;
 import nvduy1997.com.easytoeic.fragment.ListeningFragment;
 import nvduy1997.com.easytoeic.fragment.ReadingFragment;
 import nvduy1997.com.easytoeic.fragment.TopicVocabularyFragment;
-
 import nvduy1997.com.easytoeic.fragment.VOAFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity
 
         HomeFragment homeFragment = new HomeFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container,homeFragment);
+        transaction.replace(R.id.fragment_container, homeFragment);
         transaction.commit();
     }
 

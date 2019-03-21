@@ -7,11 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
-
 import nvduy1997.com.easytoeic.R;
 import nvduy1997.com.easytoeic.model.Grammar;
 

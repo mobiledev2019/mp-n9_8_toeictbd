@@ -3,12 +3,10 @@ package nvduy1997.com.easytoeic.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
-
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
-
 import nvduy1997.com.easytoeic.R;
 import nvduy1997.com.easytoeic.fragment.VOAFragment;
 
