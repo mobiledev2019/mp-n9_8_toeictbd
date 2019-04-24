@@ -3,8 +3,6 @@ package nvduy1997.com.easytoeic.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +13,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import java.util.ArrayList;
 import nvduy1997.com.easytoeic.R;
-import nvduy1997.com.easytoeic.activity.MainActivity;
 import nvduy1997.com.easytoeic.activity.QuestionActivity;
 import nvduy1997.com.easytoeic.model.Question;
 
@@ -24,7 +21,6 @@ public class QuestionTestAdapter extends RecyclerView.Adapter<QuestionTestAdapte
 
     private ArrayList<Question> listQuestion;
     private Context context;
-    private QuestionActivity questionActivity = new QuestionActivity();
 
 
     public QuestionTestAdapter(Context context, ArrayList<Question> listQuestion){
@@ -44,6 +40,7 @@ public class QuestionTestAdapter extends RecyclerView.Adapter<QuestionTestAdapte
     @Override
     public void onBindViewHolder(@NonNull final viewHolder viewHolder, int i) {
         final Question question = listQuestion.get(i);
+
         viewHolder.tvQuestion.setText(question.getTen());
         viewHolder.numberQuestion.setText(question.getId());
         viewHolder.radA.setText(question.getA());
@@ -51,7 +48,6 @@ public class QuestionTestAdapter extends RecyclerView.Adapter<QuestionTestAdapte
         viewHolder.radC.setText(question.getC());
         viewHolder.radD.setText(question.getD());
 
-        int checked = viewHolder.radioGroup.getCheckedRadioButtonId();
 
 
 
@@ -80,18 +76,7 @@ public class QuestionTestAdapter extends RecyclerView.Adapter<QuestionTestAdapte
         }
     }
 
-    private void Check(viewHolder viewHolder, Question question,RadioGroup radioGroup, int checkedRadioButtonId){
-        checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
-        if (checkedRadioButtonId == R.id.radA && viewHolder.radA.equals(question.getCheck())){
-            questionActivity.Save(question.getId());
-        }else if (checkedRadioButtonId == R.id.radB && viewHolder.radB.equals(question.getCheck())){
-            questionActivity.Save(question.getId());
-        } else if (checkedRadioButtonId == R.id.radC && viewHolder.radC.equals(question.getCheck())){
-            questionActivity.Save(question.getId());
-        } else if (checkedRadioButtonId == R.id.radD && viewHolder.radD.equals(question.getCheck())){
-            questionActivity.Save(question.getId());
-        }
-    }
+
 
 
 

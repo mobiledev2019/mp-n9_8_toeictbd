@@ -11,7 +11,10 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 import nvduy1997.com.easytoeic.R;
+import nvduy1997.com.easytoeic.activity.MainActivity;
 
 public class ReadingFragment extends Fragment implements View.OnClickListener {
 
@@ -32,6 +35,7 @@ public class ReadingFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_reading,container,false);
+        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle("Reading English");
         anhxa();
         return view;
     }

@@ -1,6 +1,7 @@
 
 package nvduy1997.com.easytoeic.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.design.widget.NavigationView;
@@ -10,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,9 +21,11 @@ import nvduy1997.com.easytoeic.fragment.GrammarFragment;
 import nvduy1997.com.easytoeic.fragment.HomeFragment;
 import nvduy1997.com.easytoeic.fragment.ListTestFragment;
 import nvduy1997.com.easytoeic.fragment.ListeningFragment;
+import nvduy1997.com.easytoeic.fragment.QuestionTestFragment;
 import nvduy1997.com.easytoeic.fragment.ReadingFragment;
 import nvduy1997.com.easytoeic.fragment.TopicVocabularyFragment;
 import nvduy1997.com.easytoeic.fragment.VOAFragment;
+import nvduy1997.com.easytoeic.test.ScreenSlideActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
@@ -30,7 +34,8 @@ public class MainActivity extends AppCompatActivity
         , HomeFragment.OpenRead
         , HomeFragment.OpenDic
         , HomeFragment.OpenVOA
-        , HomeFragment.OpenGrammar {
+        , HomeFragment.OpenGrammar
+        , ListTestFragment.PassingData {
 
     private ReadingFragment readingFragment;
     private ListTestFragment listTestFragment;
@@ -200,4 +205,13 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
     }
 
+    @Override
+    public void PassData(int idTest) {
+//        Intent intent = new Intent(this,QuestionActivity.class);
+//        intent.putExtra("KEY",idTest);
+//        startActivity(intent);
+        Intent intent = new Intent(this, ScreenSlideActivity.class);
+        intent.putExtra("KEY",idTest);
+        startActivity(intent);
+    }
 }

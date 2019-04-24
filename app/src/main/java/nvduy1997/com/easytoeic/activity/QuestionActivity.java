@@ -1,65 +1,82 @@
 package nvduy1997.com.easytoeic.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import nvduy1997.com.easytoeic.R;
+import nvduy1997.com.easytoeic.adapter.MyPagerAdapter;
 import nvduy1997.com.easytoeic.adapter.QuestionTestAdapter;
 import nvduy1997.com.easytoeic.fragment.QuestionTestFragment;
-import nvduy1997.com.easytoeic.model.Question;
+import nvduy1997.com.easytoeic.fragment.ScoreQuestionFragment;
 
 
 public class QuestionActivity extends AppCompatActivity {
-
-    private TextView tvTime, tvKiemTra;
-    QuestionTestFragment questionTestFragment;
-
+//Bây giơông
+    private TextView tvTime;
+    QuestionTestFragment questionTestFragment = new QuestionTestFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
         setContentView(R.layout.activity_question);
+
+        ViewPager my_Pager_Content = findViewById(R.id.my_pager_content_question);
+        TabLayout my_Tablayout = findViewById(R.id.tab_layout);
+        my_Tablayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.design_default_color_primary_dark));
+        my_Tablayout.setupWithViewPager(my_Pager_Content);
+
+        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        pagerAdapter.AddFragmentPager(questionTestFragment,"Question");
+        pagerAdapter.AddFragmentPager(new ScoreQuestionFragment(),"Score");
+        my_Pager_Content.setAdapter(pagerAdapter);
+
+        Intent intent = getIntent();
+        if (intent != null){
+            int a = intent.getIntExtra("KEY",0);
+            Bundle bundle = new Bundle();
+            bundle.putInt("IDTEST",a);
+            questionTestFragment.setArguments(bundle);
+        }
+
         initializeComponents();
-        CountTime countTime = new CountTime(900000,1000);
+
+        CountTime countTime = new CountTime(900000, 1000);
         countTime.start();
-        Bundle bundle = getIntent().getExtras();
-         questionTestFragment = new QuestionTestFragment();
-        questionTestFragment.setArguments(bundle);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.RelativeLayout_Content_Question, questionTestFragment);
-        transaction.commit();
+
+
     }
 
     private void initializeComponents() {
         tvTime = findViewById(R.id.tvTimer);
 
-        tvKiemTra = findViewById(R.id.tvKiemTra);
+        TextView tvKiemTra = findViewById(R.id.tvKiemTra);
         tvKiemTra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences("data",Context.MODE_PRIVATE);
-                String a = sharedPreferences.getString("id","");
-                Log.d("onClick", "onClick: " + a);
+
             }
         });
     }
+
+
 
     public class CountTime extends CountDownTimer {
 
@@ -82,18 +99,6 @@ public class QuestionActivity extends AppCompatActivity {
             tvTime.setText("00:00");
         }
     }
-
-    public void Save(String str){
-        SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("id",str);
-        editor.apply();
-    }
-
-
-
-
-
 
 
 }

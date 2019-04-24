@@ -1,19 +1,21 @@
 package nvduy1997.com.easytoeic.fragment;
 
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import nvduy1997.com.easytoeic.R;
 import nvduy1997.com.easytoeic.adapter.QuestionTestAdapter;
 import nvduy1997.com.easytoeic.model.Question;
@@ -32,13 +34,17 @@ public class QuestionTestFragment extends Fragment {
     public QuestionTestAdapter adapter;
     private RecyclerView recyclerViewQuestion;
     private View view;
-    private int ID;
+    private static int idtest;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ID = getArguments().getInt("KEY");
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            idtest = bundle.getInt("IDTEST");
+
+        }
     }
 
     @Override
@@ -46,42 +52,41 @@ public class QuestionTestFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_screen_slide, container, false);
         recyclerViewQuestion = view.findViewById(R.id.RecyclerViewQuestion);
-        if (ID == 1){
-            getAllQuestionPart5Test1();
-        }
+        getAllQuestionTest(String.valueOf(idtest));
+//        Log.d("onCreateView", "onCreateView: " + idtest);
+        //  getALL();
         return view;
 
     }
 
-    public void getAllQuestionPart5Test1() {
+    private void getAllQuestionTest(String id) {
         DataService dataService = APIService.getService();
-        Call<List<Question>> callBack = dataService.getQuestionP5Test1();
-        callBack.enqueue(new Callback<List<Question>>() {
+        Call<List<Question>> callback = dataService.getQuestionTest(id);
+        callback.enqueue(new Callback<List<Question>>() {
             @Override
             public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
-                recyclerViewQuestion = view.findViewById(R.id.RecyclerViewQuestion);
-                ArrayList<Question> listQuestion = (ArrayList<Question>) response.body();
-                adapter = new QuestionTestAdapter(getActivity(), listQuestion);
-                LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
-                linearLayout.setOrientation(LinearLayout.VERTICAL);
-                recyclerViewQuestion.setLayoutManager(linearLayout);
-                recyclerViewQuestion.setAdapter(adapter);
+                ArrayList<Question> arrayQuestion = (ArrayList<Question>) response.body();
 
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                recyclerViewQuestion.setLayoutManager(linearLayoutManager);
+                adapter = new QuestionTestAdapter(getContext(), arrayQuestion);
+                recyclerViewQuestion.setAdapter(adapter);
             }
 
             @Override
             public void onFailure(Call<List<Question>> call, Throwable t) {
-
+                Log.d("onFailure", "onFailure: " + t.toString());
             }
         });
-
     }
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-
 
 
 }

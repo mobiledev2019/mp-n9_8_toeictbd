@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v7.widget.RecyclerView
+    <ListView
         android:background="@drawable/custom_background"
-        android:id="@+id/RecyclerViewTest"
+        android:id="@+id/lv_Test"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+    </ListView>
 </LinearLayout>

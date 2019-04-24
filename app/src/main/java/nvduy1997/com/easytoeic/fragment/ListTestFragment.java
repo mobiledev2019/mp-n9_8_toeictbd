@@ -1,68 +1,72 @@
 package nvduy1997.com.easytoeic.fragment;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
+import android.widget.AdapterView;
+import android.widget.ListView;
 import java.util.ArrayList;
-
+import java.util.List;
 import nvduy1997.com.easytoeic.R;
-import nvduy1997.com.easytoeic.activity.QuestionActivity;
 import nvduy1997.com.easytoeic.adapter.ListTestAdapter;
-import nvduy1997.com.easytoeic.model.Test;
+import nvduy1997.com.easytoeic.model.TestPart5;
+import nvduy1997.com.easytoeic.server.APIService;
+import nvduy1997.com.easytoeic.server.DataService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class ListTestFragment extends Fragment implements ListTestAdapter.OnClickItemView {
+public class ListTestFragment extends Fragment  {
 
     private View view;
     private ListTestAdapter adapter;
-    private RecyclerView recyclerView;
-    private ArrayList<Test> arrayTest;
+    private ListView lv_Test;
+    private PassingData ls;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ls = (PassingData) context;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_list_test_part5, container, false);
-        recyclerView = view.findViewById(R.id.RecyclerViewTest);
-        addTen();
-        adapter = new ListTestAdapter(getActivity(), arrayTest);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        recyclerView.setAdapter(adapter);
-        adapter.setOnClickItemView(this);
+        lv_Test = view.findViewById(R.id.lv_Test);
+        getAllTestPart5();
         return view;
     }
+    private void getAllTestPart5(){
+        DataService dataService = APIService.getService();
+        Call<List<TestPart5>> callback = dataService.getTestPart5();
+        callback.enqueue(new Callback<List<TestPart5>>() {
+            @Override
+            public void onResponse(Call<List<TestPart5>> call, Response<List<TestPart5>> response) {
+                final ArrayList<TestPart5> arrayTestPart5 = (ArrayList<TestPart5>) response.body();
+                adapter = new ListTestAdapter(getContext(),arrayTestPart5);
+                lv_Test.setAdapter(adapter);
+                lv_Test.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        ls.PassData(Integer.parseInt(arrayTestPart5.get(position).getId()));
+                    }
+                });
+            }
 
-    public void addTen() {
-        arrayTest = new ArrayList<>();
-        arrayTest.add(new Test("Test 1", 1));
-        arrayTest.add(new Test("Test 2", 2));
-        arrayTest.add(new Test("Test 3", 3));
-        arrayTest.add(new Test("Test 4", 4));
-        arrayTest.add(new Test("Test 5", 5));
-        arrayTest.add(new Test("Test 6", 6));
-        arrayTest.add(new Test("Test 7", 7));
-        arrayTest.add(new Test("Test 8", 8));
-        arrayTest.add(new Test("Test 9", 9));
-        arrayTest.add(new Test("Test 10", 10));
+            @Override
+            public void onFailure(Call<List<TestPart5>> call, Throwable t) {
+
+            }
+        });
+     }
+    public interface PassingData{
+        void PassData(int idTest);
     }
 
-    @Override
-    public void onClickItemView(Test test) {
-        if (test.getId() == 1) {
-            adapter = new ListTestAdapter(getContext(), arrayTest);
-            Intent intent = new Intent(getActivity(), QuestionActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putInt("KEY", test.getId());
-            intent.putExtras(bundle);
-            startActivity(intent);
-        }
-    }
 }

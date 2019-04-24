@@ -12,7 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import nvduy1997.com.easytoeic.R;
+import nvduy1997.com.easytoeic.activity.MainActivity;
 import nvduy1997.com.easytoeic.adapter.GrammarAdapter;
 import nvduy1997.com.easytoeic.model.Grammar;
 import nvduy1997.com.easytoeic.server.APIService;
@@ -42,6 +45,7 @@ public class GrammarFragment extends Fragment  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_grammar,container,false);
+        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle("Grammar English");
         listViewGrammar = view.findViewById(R.id.ListViewGrammar);
         gettAllGrammar();
         return view;
